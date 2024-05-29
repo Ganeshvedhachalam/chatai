@@ -32,6 +32,7 @@ function App() {
 
   const [chat, setChat ]= useState([]);
   const [menuOpen, setMenuOpen ]= useState(false);
+  
 
 
   return (
@@ -60,7 +61,7 @@ function App() {
 
 
       <Grid bgcolor="secondary.main" item xs={12} md={9}> 
-       <Outlet  context={{chat:chat , setchat:setChat}}/>
+       <Outlet  context={{chat:chat , setChat:setChat }}/>
        </Grid>
         
       </Grid>

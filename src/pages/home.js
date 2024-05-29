@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Navbar from "../Components/navbar";
 import { Box, Button, Input, Stack, TextField, Typography } from "@mui/material";
 import { Navigate, useNavigate, useOutletContext } from "react-router-dom";
@@ -6,12 +6,18 @@ import { ChatInputForm } from "../Components/ChatInputForm ";
 import data from "../Backend/Chatmodel.json"
 import ChatCard from "../Components/ChatCard";
 import InitialChat from "../Components/initialChat";
+import { ThemeContext } from "@emotion/react";
+import FeedbackModal from "../Components/FeedbackModal";
 
 
 export function Home(){
-    const { chat, setchat } = useOutletContext();
-    const [chatId,setChatId]=useState(1)
-
+    const [showModal, setShowModal] = useState(false)
+    const listRef = useRef(null)
+    const [chatId, setChatId] = useState(1)
+    const [selectedChatId, setSelectedChatId] = useState(null)
+    const [scrollToBottom, setScrollToBottom] = useState(false)
+    const { chat, setChat } = useOutletContext();
+    const { mode } = useContext(ThemeContext)
 
 
     const generateResponse=(input)=>{
@@ -20,7 +26,7 @@ export function Home(){
         if(response !== undefined){
             answer=response.response
         }
-        setchat(prev => ([...prev,
+        setChat(prev => ([...prev,
             {
                 type: 'human',
                 text: input,
@@ -37,18 +43,29 @@ export function Home(){
 
              setChatId((prev)=>prev+1);
     }
+    useEffect(() => {
+        listRef.current?.lastElementhild?.scrollIntoView()
+    }, [scrollToBottom])
 
-    return(
-        <>
-     
-        <Stack display={"flex"} justifyContent={"space-between"}>  
 
-        <Navbar/>  
+    return (
+        <Stack
+            height={'100vh'}
+            justifyContent={'space-between'}
+            sx={{
+                '@media (max-width:767px)': {
+                    background: mode == 'light' ? 'linear-gradient(#F9FAFA 60%, #EDE4FF)' : ''
+                }
+            }}
+        >
 
-        {chat.length == 0 && <InitialChat generateResponse={generateResponse} />}
+            <Navbar />
 
-        {chat.length>0 &&
-         <Stack   height={1}
+            {chat.length == 0 && <InitialChat generateResponse={generateResponse} />}
+
+            {chat.length > 0 && (
+                <Stack
+                    height={1}
                     flexGrow={0}
                     p={{ xs: 2, md: 3 }}
                     spacing={{ xs: 2, md: 3 }}
@@ -65,19 +82,24 @@ export function Home(){
                             backgroundColor: 'rgba(151, 133, 186,0.4)',
                             borderRadius: '8px'
                         }
-                    }}>
-            {
-            chat.map((item,index) => (<ChatCard key={index} details={item} />))}
+                    }}
+                    ref={listRef}
+                >
+                    {chat.map((item, index) => (
+                        <ChatCard
+                            details={item}
+                            key={index}
+                            updateChat={setChat}
+                            setSelectedChatId={setSelectedChatId}
+                            showFeedbackModal={() => setShowModal(true)}
+                        />
+                    ))}
+                </Stack>
+            )}
 
-         </Stack> }
-        
-         <ChatInputForm generateResponse={generateResponse} chat={chat}  clearchat={()=>setchat([])} />
+            <ChatInputForm generateResponse={generateResponse} setScroll={setScrollToBottom} chat={chat} clearChat={() => setChat([])} />
 
-         </Stack>
-         
-
-        
-
-        </>
+            <FeedbackModal open={showModal} updateChat={setChat} chatId={selectedChatId} handleClose={() => setShowModal(false)} />
+        </Stack>
     )
 }

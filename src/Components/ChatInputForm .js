@@ -3,7 +3,7 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { Navigate, useNavigate } from "react-router-dom";
 
 
-export function ChatInputForm( {generateResponse ,clearchat,chat}){
+export function ChatInputForm( {generateResponse ,clearchat,chat ,setScroll}){
 
     const [input,setInput]=useState("")
 
@@ -13,6 +13,8 @@ export function ChatInputForm( {generateResponse ,clearchat,chat}){
          e.preventDefault()
         generateResponse(input)
         setInput("")
+    setScroll(prev => !prev)
+
     
 
     }
