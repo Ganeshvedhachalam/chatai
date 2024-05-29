@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import {Grid, Typography, createTheme,ThemeProvider,Stack,Box,Button } from '@mui/material'
 import SideBar from './Components/SIdeBar';
@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom/client';
 import { Outlet } from 'react-router-dom';
 
 function App() {
+  
 
   const theme  = createTheme({
     palette:{
@@ -27,10 +28,10 @@ function App() {
       fontFamily:"ubuntu,open-sans" ,
     }
 
-  }
+  }  );
 
-   
-  );
+  const [chat, setChat ]= useState([]);
+  const [menuOpen, setMenuOpen ]= useState(false);
 
 
   return (
@@ -41,15 +42,25 @@ function App() {
       <Grid sx={{display:"flex" ,justifyContent:"center"}} container spacing={5}>
         
        
-      <Grid item xs={0} md={3}>
-       <SideBar/>
+      <Grid    sx={{
+            
+              '@media (max-width:800px)': {
+                width: '70%',
+                transform: menuOpen ? 'translateX(0)' : 'translateX(-100%)',
+                transition: 'transform 400ms ease',
+              },
+            }} position={{ xs: 'fixed', md: 'relative' }}
+            height={'100vh'}
+            zIndex={{ xs: 9999, md: 1 }}
+            boxShadow={{ xs: menuOpen ? 10 : 0, md: 0 }}item xs={0} md={3}>
+
+       <SideBar  setChat={setChat} closeMenu={() => setMenuOpen(false)} />
       </Grid>
 
 
 
       <Grid bgcolor="secondary.main" item xs={12} md={9}> 
-       <Outlet/>
-       <Typography variant="h1" color="initial"> </Typography>
+       <Outlet  context={{chat:chat , setchat:setChat}}/>
        </Grid>
         
       </Grid>
