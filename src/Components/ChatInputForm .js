@@ -24,7 +24,7 @@ export function ChatInputForm( {generateResponse ,clearchat,chat ,setScroll}){
 
         const date = new Date()
         localStorage.setItem("chat",JSON.stringify([{chat:chat ,datetime:date },...chatHistory ]))
-        clearchat()
+        // clearchat([])
 
     }
 
