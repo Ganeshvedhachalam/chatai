@@ -56,7 +56,7 @@ export  function History() {
                         bgcolor={'primary.light'}
                         borderRadius={2}
                     >
-                        No saved chats.
+                        No saved chats
                     </Typography>
                 )}
 
