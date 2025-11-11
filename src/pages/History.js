@@ -33,7 +33,10 @@ export  function History() {
                 '&::-webkit-scrollbar-thumb': {
                     backgroundColor: 'rgba(151, 133, 186,0.4)',
                     borderRadius: '8px'
-                }
+                },
+                display:'flex',
+                flexDirection:"column",
+                alignItems:"center"
             }}
         >
 

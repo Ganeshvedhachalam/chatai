@@ -6,19 +6,19 @@ export default function InitialChat({ generateResponse }) {
 
     const initialData = [
         {
-            heading: 'Hi, what is the weather',
+            heading: "What's the difference between GET and POST requests?",
             subtext: 'Get immediate AI generated response'
         },
         {
-            heading: 'Hi, what is my location',
+            heading: "Can you explain RESTful APIs?",
             subtext: 'Get immediate AI generated response'
         },
         {
-            heading: 'Hi, what is the temperature',
+            heading: "What is a Promise in JavaScript?",
             subtext: 'Get immediate AI generated response'
         },
         {
-            heading: 'Hi, how are you',
+            heading: "How do you handle errors in async/await?",
             subtext: 'Get immediate AI generated response'
         },
     ]
